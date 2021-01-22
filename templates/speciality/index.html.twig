@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% set bodyclass = bodyclass|default("")~" specialities-index " %}
+
+{% block title %}Speciality index{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="container">
+            <h1 class="title">Speciality index</h1>
+            <div class="btn-link-wrapper">
+                <a class="btn-link" href="{{ path('speciality_new') }}"><button type="button" class="btn btn-success">Create new</button></a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Tags</th>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for speciality in specialities %}
+                    <tr>
+                        <td>{{ speciality.id }}</td>
+                        <td>
+                            {% for tag in speciality.tags %}
+                                {{ tag.name }}
+                                {% if not loop.last %}/{% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{{ speciality.name }}</td>
+                        <td>{% if speciality.media %}<img class="img-fluid" src="images/{{ speciality.media }}"/>{% else %}Aucune image{% endif %}</td>
+                        <td>
+                            <a href="{{ path('speciality_show', {'id': speciality.id}) }}">show</a>
+                            <a href="{{ path('speciality_edit', {'id': speciality.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

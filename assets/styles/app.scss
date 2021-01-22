@@ -1,0 +1,27 @@
+@import "~bootstrap/scss/bootstrap";
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: greyscale;
+}
+
+.specialities-index {
+    img {
+        max-width: 100px;
+    }
+}
+
+form {
+    .submit {
+        margin-bottom: 15px;
+    }
+}
+
+.btn-link-wrapper {
+    display: flex;
+    align-items: center;
+    margin: 5px 0 15px;
+    .btn-link {
+        margin-right: 15px;
+    }
+}

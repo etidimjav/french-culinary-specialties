@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% set bodyclass = bodyclass|default("")~" speciality " %}
+
+{% block title %}Speciality{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="container">
+            <h1 class="title">Speciality</h1>
+            <div class="btn-link-wrapper">
+                <a class="btn-link" href="{{ path('speciality_edit', {'id': speciality.id}) }}"><button class="btn btn-primary">Edit</button></a>
+                {{ include('speciality/_delete_form.html.twig') }}
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ speciality.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tags</th>
+                        <td>
+                            {% for tag in speciality.tags %}
+                                {{ tag.name }}
+                                {% if not loop.last %}/{% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{ speciality.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Media</th>
+                        <td>{% if speciality.media %}<img class="img-fluid" src="images/{{ speciality.media }}"/>{% else %}Aucune image{% endif %}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a href="{{ path('speciality_index') }}"><button type="button" class="btn btn-warning">Back to list</button></a>
+        </div>
+    </div>
+{% endblock %}

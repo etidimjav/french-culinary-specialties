@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% set bodyclass = bodyclass|default("")~" speciality-new " %}
+
+{% block title %}New Speciality{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="container">
+            <h1 class="title">Create new Speciality</h1>
+
+            {{ include('speciality/_form.html.twig') }}
+
+            <a href="{{ path('speciality_index') }}"><button type="button" class="btn btn-warning">Back to list</button></a>
+        </div>
+    </div>
+{% endblock %}

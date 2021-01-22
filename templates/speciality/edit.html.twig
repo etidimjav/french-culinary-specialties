@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% set bodyclass = bodyclass|default("")~" speciality-edit " %}
+
+{% block title %}Edit Speciality{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="container">
+            <h1 class="title">Edit Speciality</h1>
+            <div class="btn-link-wrapper">
+                {{ include('speciality/_delete_form.html.twig') }}
+            </div>
+            
+            {{ include('speciality/_form.html.twig', {'button_label': 'Update'}) }}
+
+            <a href="{{ path('speciality_index') }}"><button type="button" class="btn btn-warning">Back to list</button></a>
+        </div>
+    </div>
+{% endblock %}
