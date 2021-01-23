@@ -9,6 +9,9 @@ use App\Repository\SpecialityRepository;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -45,6 +48,45 @@ class SpecialityController extends AbstractFOSRestController
     {
         $data = $this->repository->findAll();
         $view = $this->view($data, 200);
+
+        return $this->handleView($view);
+    }
+
+    /**
+     * @Rest\Get(
+     *    path = "/specialities_filter",
+     *    host="api.%domain%",
+     *    name = "app_specialities_filter_show"
+     * )
+     * @QueryParam(name="name", requirements="[A-Za-zéèàê ]+", description="Speciality name.")
+     * @QueryParam(map=true, name="tags", requirements="\d+", description="Tag name.")
+     */
+    public function getSpecialitiesFilterAction(ParamFetcher $paramFetcher)
+    {
+        // $dynamicRequestParam = new RequestParam();
+        // $dynamicRequestParam->name = "dynamic_request";
+        // $dynamicRequestParam->requirements = "[a-z]+";
+        // $paramFetcher->addParam($dynamicRequestParam);
+
+        $dynamicQueryParam = new QueryParam();
+        $dynamicQueryParam->name = 'dynamic_query';
+        $dynamicQueryParam->requirements = '[A-Za-zéèàê ]+';
+        $paramFetcher->addParam($dynamicQueryParam);
+
+        $name = $paramFetcher->get('name');
+        $tags = $paramFetcher->get('tags');
+
+        $filters = [];
+        if (!empty($name)) {
+            $filters['name'] = $name;
+        }
+        if (!empty($tags)) {
+            $filters['tags'] = $tags;
+        }
+
+        $data = $this->repository->findByFilters($filters);
+        $view = $this->view($data, 200);
+        $this->addSerializationGroups($view);
 
         return $this->handleView($view);
     }

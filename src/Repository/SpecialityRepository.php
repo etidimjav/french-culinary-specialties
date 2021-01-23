@@ -58,14 +58,31 @@ class SpecialityRepository extends ServiceEntityRepository
 
     /**
      * @param mixed[] $filters
-     * @param mixed   $page
-     * @param mixed   $pageSize
-     * @param mixed   $limit
-     * @param mixed   $locale
-     * @param mixed   $options
      */
-    public function findByFilters($filters, $page, $pageSize, $limit, $locale, $options = [])
+    public function findByFilters($filters)
     {
-        return $this->parentFindByFilters($filters, $page, $pageSize, $limit, $locale, $options);
+        $qb = $this->createQueryBuilder('s');
+
+        $qb
+            ->addSelect('st')
+            ->leftJoin('s.tags', 'st')
+        ;
+
+        if (isset($filters['name']) && null !== $name = $filters['name']) {
+            $qb
+                ->andWhere($qb->expr()->like('s.name', ':name'))
+                ->setParameter(':name', '%'.$name.'%')
+            ;
+        }
+        if (isset($filters['tags']) && null !== $tags = $filters['tags']) {
+            foreach ($tags as $key => $tag) {
+                $qb->andWhere(":value_{$key} MEMBER OF s.tags");
+                $qb->setParameter("value_{$key}", $tag);
+            }
+        }
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
     }
 }

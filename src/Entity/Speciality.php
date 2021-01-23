@@ -117,6 +117,25 @@ class Speciality
     }
 
     /**
+     * Get tags.
+     *
+     * @VirtualProperty
+     * @SerializedName("tags")
+     * @Groups({"fullSpeciality"})
+     *
+     * @return array
+     */
+    public function getTagsName(): ?array
+    {
+        $tagsName = [];
+        foreach ($this->tags as $tag) {
+            $tagsName[] = $tag->getName();
+        }
+
+        return $tagsName;
+    }
+
+    /**
      * Add tag.
      *
      * @param mixed $tag
