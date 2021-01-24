@@ -85,7 +85,7 @@ class SpecialityController extends AbstractFOSRestController
         }
 
         $data = $this->repository->findByFilters($filters);
-        $view = $this->view($data, 200);
+        $view = $this->view($data, 200, ['Access-Control-Allow-Origin' => '*', 'Access-Control-Allow-Headers' => 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method', 'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS, PUT, DELETE', 'Allow' => 'GET, POST, OPTIONS, PUT, DELETE']);
         $this->addSerializationGroups($view);
 
         return $this->handleView($view);
