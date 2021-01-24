@@ -55,14 +55,17 @@ class SpecialitiesCsvManager
      */
     public function import($csvAbsoluteFilepath, $imagesFolderAbsoluteFilepath)
     {
+        $filesystem = new Filesystem();
+
         //truncate table Speciality and Tag
         foreach (self::CSV_TABLE_ALIAS as $tableName) {
             $this->truncateTable($tableName);
         }
 
-        //create images public folder
-        $filesystem = new Filesystem();
-        if (!$filesystem->exists(self::PUBLIC_IMAGES_PATH)) {
+        //delete and create images public folder
+        if ($filesystem->exists(self::PUBLIC_IMAGES_PATH)) {
+            $filesystem->remove(self::PUBLIC_IMAGES_PATH);
+        } else {
             $filesystem->mkdir(self::PUBLIC_IMAGES_PATH);
         }
 
